@@ -1,0 +1,29 @@
+{
+  "name": "onepagecatalog",
+  "version": "1.0.0",
+  "description": "Node webserver that provides the ability to view and add to a catalog of thematically-related items",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reaganwood1/OnePageCatalogCIS526.git"
+  },
+  "keywords": [
+    "SCRUM",
+    "software",
+    "development",
+    "task",
+    "board"
+  ],
+  "author": "Reagan K. Wood",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reaganwood1/OnePageCatalogCIS526/issues"
+  },
+  "homepage": "https://github.com/reaganwood1/OnePageCatalogCIS526#readme",
+  "dependencies": {
+    "sqlite3": "3.1.8"
+  }
+}
