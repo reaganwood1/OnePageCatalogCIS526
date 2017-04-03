@@ -10,7 +10,8 @@ var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('singlepage.sqlite3', function(err) {
   if(err) console.error(err);
 });
-
+var router = new (require('./lib/route')).Router(db);
+/*
 // Run the migrations
 var migrate = require('../lib/migrate');
 migrate(db, 'migrations', function(err){
@@ -18,6 +19,7 @@ migrate(db, 'migrations', function(err){
   else console.log("Migrations complete!");
 });
 // end database server input
+*/
 
 // Cache static directory in the fileserver
 fileserver.loadDir('public');
