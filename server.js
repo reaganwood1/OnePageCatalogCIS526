@@ -2,11 +2,29 @@
 
 var PORT = 3000;
 
+// start database server input
+// Set up the database
 var http = require('http');
 var fileserver = require('./lib/fileserver');
+var sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database('singlepage.sqlite3', function(err) {
+  if(err) console.error(err);
+});
+
+// Run the migrations
+var migrate = require('../lib/migrate');
+migrate(db, 'migrations', function(err){
+  if(err) console.error(err);
+  else console.log("Migrations complete!");
+});
+// end database server input
 
 // Cache static directory in the fileserver
 fileserver.loadDir('public');
+
+// Define our routes
+var project = require('./src/resource/project');
+router.resource('/projects', project);
 
 var server = new http.Server(function(req, res) {
   // Remove the leading '/' from the resource url
