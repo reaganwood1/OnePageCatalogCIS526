@@ -23,14 +23,14 @@ migrate(db, 'migrations', function(err){
 
 // Cache static directory in the fileserver
 fileserver.loadDir('public');
-
 // Define our routes
 var project = require('./src/resource/project');
 router.resource('/projects', project);
-
 var server = new http.Server(function(req, res) {
   // Remove the leading '/' from the resource url
+
   var resource = req.url.slice(1);
+  console.log(resource);
   // If no resource is requested, serve the cached index page.
   if(resource == '')
     fileserver.serveFile('public/index.html', req, res);
