@@ -3,6 +3,21 @@
 
 var project = require('./project');
 
+jQuery.ajax('/projects/', {
+  method: 'GET',
+  success: function(data) {
+    data.forEach(function(car) {
+      var item = document.createElement("li");
+      item.innerHTML = car.name;
+      item.onclick = function () { displayAlbumInfo(car.id); };
+      $("#pictures").append(item);
+    });
+  },
+  error: function(xhr, status) {
+    // If the status was not OK (200), we had an error
+    console.log('Error: ' + status);
+  }
+});
 
 $.get('/projects', function(projects){
   $('body').html(project.list(projects));

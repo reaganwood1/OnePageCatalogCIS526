@@ -20,7 +20,19 @@ migrate(db, 'migrations', function(err){
 });
 // end database server input
 */
+db.serialize(function() {
+  db.run("CREATE TABLE IF NOT EXISTS projects (id INTEGER PRIMARY KEY, name TEXT, description TEXT, image_url TEXT)");
 
+  //db.run("INSERT INTO projects (id, name, description, image_url) values ('1', 'picture', 'item', 'lambo6.jpg')");
+  //db.run("INSERT INTO projects (id, name, description, image_url) values ('2', 'discussions', 'hello', 'lambo7.jpg')");
+  //db.run("INSERT INTO projects (id, name, description, image_url) values ('3', '3', 'hello', 'lambo8.jpg')");
+
+
+  db.each("SELECT id, name, description FROM pictureAlbum", function(err, row) {
+      if(err) return console.error(err);
+      console.log(row);
+  });
+});
 // Cache static directory in the fileserver
 fileserver.loadDir('public');
 // Define our routes
@@ -37,12 +49,8 @@ var server = new http.Server(function(req, res) {
   // If the resource is cached in the fileserver, serve it
   else if(fileserver.isCached(resource))
     fileserver.serveFile(resource, req, res);
-  // Otherwise, serve a 404 error
-  else {
-    res.statusCode = 404;
-    res.statusMessage = "Resource not found";
-    res.end("Resource not found");
-  }
+  // Otherwise, route the request
+  else router.route(req, res);
 });
 
 // Launch the server
