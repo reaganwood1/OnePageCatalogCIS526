@@ -19,6 +19,7 @@ module.exports = {
  * @param {sqlite3.Database} db - the database object
  */
 function list(req, res, db) {
+  console.log("I'm hit");
   db.all("SELECT * FROM projects", [], function(err, projects){
     if(err) {
       console.error(err);
@@ -48,11 +49,12 @@ function create(req, res, db) {
   req.on("data", function(data){
     body += data;
   });
-
   req.on("end", function() {
     var project = JSON.parse(body);
-    db.run("INSERT INTO projects (name, description, version, repository, license) VALUES (?,?,?,?,?)",
-      [project.name, project.description, project.version, project.repository, project.license],
+    //db.run("INSERT INTO projects (name, description, version, repository, license) VALUES (?,?,?,?,?)",
+      //[project.name, project.description, project.version, project.repository, project.license],
+      db.run("INSERT INTO projects (id, name, description, image_url) VALUES (?,?,?,?)",
+        [8, project.name, project.description, project.image_url],
       function(err) {
         if(err) {
           console.error(err);

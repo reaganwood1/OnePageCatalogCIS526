@@ -28,10 +28,10 @@ db.serialize(function() {
   //db.run("INSERT INTO projects (id, name, description, image_url) values ('3', '3', 'hello', 'lambo8.jpg')");
 
 
-  db.each("SELECT id, name, description FROM pictureAlbum", function(err, row) {
-      if(err) return console.error(err);
-      console.log(row);
-  });
+  // db.each("SELECT id, name, description FROM pictureAlbum", function(err, row) {
+  //     if(err) return console.error(err);
+  //     console.log(row);
+  // });
 });
 // Cache static directory in the fileserver
 fileserver.loadDir('public');
@@ -50,7 +50,10 @@ var server = new http.Server(function(req, res) {
   else if(fileserver.isCached(resource))
     fileserver.serveFile(resource, req, res);
   // Otherwise, route the request
-  else router.route(req, res);
+  else {
+    router.route(req, res);
+    console.log("hit");
+  }
 });
 
 // Launch the server

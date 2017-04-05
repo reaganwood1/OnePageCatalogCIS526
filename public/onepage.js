@@ -7,6 +7,7 @@ jQuery.ajax('/projects/', {
   method: 'GET',
   success: function(data) {
     data.forEach(function(car) {
+      
       var item = document.createElement("li");
       item.innerHTML = car.name;
       item.onclick = function () { displayAlbumInfo(car.id); };

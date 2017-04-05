@@ -26,28 +26,61 @@
         });
     </script>
     <form class="uploadContainer" hidden="true" action="" method="POST" enctype="multipart/form-data">
-      <input type="file" name="image">
-      <input type="text" name="title" placeholder="add a title">
-      <input type="text" name="description" placeholder="add a description">
-      <input class="submitImageButton" type="submit" value="Upload Image">
+      <input type="file" id="uploadImage" name="image">
+      <input type="text" id="uploadTitle" name="title" placeholder="add a title">
+      <input type="text" id="uploadDescription" name="description" placeholder="add a description">
+      <input class="submitImageButton" type="submit" onclick="submitClicked()" value="Upload Image">
     </form>
     <script>
+
         // Source: http://stackoverflow.com/questions/13888093/how-to-show-hide-a-form-on-button-click-in-jquery
         $(".uploadContainer").submit(function() {
           /* AJAX calls and insertion into #productionForm */
           console.log("yellow");
           return false;
         });
+
+        function submitClicked(){
+          var img_url = $("#uploadImage").val();
+          var title = $("#uploadTitle").val();
+          var description = $("#uploadDescription").val();
+          jQuery.ajax('/projects/', {
+            method: 'POST',
+            data: JSON.stringify({name: title, description: description, img_url: img_url}),
+            success: function(data) {
+                // make ajax request to retrieve item to add it to the page without reloading
+                jQuery.ajax('/projects/', {
+                  method: 'GET',
+                  success: function(data) {
+                      var car = data[data.length - 1];
+                      var item = document.createElement("li");
+                      item.innerHTML = car.name;
+                      item.onclick = function () { displayCarInfo(car.id); console.log("I've been clicked")};
+                      $("#pictures").append(item);
+                    
+                  },
+                  error: function(xhr, status) {
+                    // If the status was not OK (200), we had an error
+                    console.log('Error: ' + status);
+                  }
+                });
+              },
+            error: function(xhr, status) {
+              // If the status was not OK (200), we had an error
+              console.log('Error: ' + status);
+            }
+          });
+        }
+
     </script>
     <script>
-    console.log("hello");
     jQuery.ajax('/projects/', {
       method: 'GET',
       success: function(data) {
         data.forEach(function(car) {
           var item = document.createElement("li");
           item.innerHTML = car.name;
-          item.onclick = function () { displayAlbumInfo(car.id); console.log("I've been clicked")};
+          item.onclick = function () { displayCarInfo(car.id); console.log("I've been clicked")};
           $("#pictures").append(item);
         });
       },
@@ -57,7 +90,7 @@
       }
     });
 
-    functoin displayCarInfo = function(id) {
+    function displayCarInfo (id) {
 
       console.log("car id" + id);
     }
