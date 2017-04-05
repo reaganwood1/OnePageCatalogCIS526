@@ -54,7 +54,7 @@ function create(req, res, db) {
     //db.run("INSERT INTO projects (name, description, version, repository, license) VALUES (?,?,?,?,?)",
       //[project.name, project.description, project.version, project.repository, project.license],
       db.run("INSERT INTO projects (id, name, description, image_url) VALUES (?,?,?,?)",
-        [8, project.name, project.description, project.image_url],
+        [project.id , project.name, project.description, project.image_url],
       function(err) {
         if(err) {
           console.error(err);

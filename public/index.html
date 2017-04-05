@@ -13,25 +13,40 @@
       src="https://code.jquery.com/jquery-3.2.1.min.js"
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"></script>
-    <!--<script src="public/onepage.js" type="text/javascript"></script>-->
     <form class="createContainer" enctype="multipart/form-data">
       <input id="createButton" type="submit" value="Click to Create an Image">
     </form>
-    <script>
-        // Source: http://stackoverflow.com/questions/13888093/how-to-show-hide-a-form-on-button-click-in-jquery
-        $(".createContainer").submit(function() {
-          /* AJAX calls and insertion into #productionForm */
-          $(".uploadContainer").show();
-          return false;
-        });
-    </script>
     <form class="uploadContainer" hidden="true" action="" method="POST" enctype="multipart/form-data">
       <input type="file" id="uploadImage" name="image">
       <input type="text" id="uploadTitle" name="title" placeholder="add a title">
       <input type="text" id="uploadDescription" name="description" placeholder="add a description">
       <input class="submitImageButton" type="submit" onclick="submitClicked()" value="Upload Image">
     </form>
+    <!--<script src="public/onepage.js" type="text/javascript"></script>-->
     <script>
+        var items = 0;
+        jQuery.ajax('/projects/', {
+          type: "GET",
+          success: function(data) {
+            data.forEach(function(car) {
+              var item = document.createElement("li");
+              item.innerHTML = car.name;
+              items++;
+              item.onclick = function () { displayCarInfo(car.id); console.log("I've been clicked")};
+              $("#pictures").append(item);
+            });
+          },
+          error: function(xhr, status) {
+            // If the status was not OK (200), we had an error
+            console.log('Error: ' + status);
+          }
+        });
+
+        function displayCarInfo (id) {
+
+          console.log("car id" + id);
+        }
+
 
         // Source: http://stackoverflow.com/questions/13888093/how-to-show-hide-a-form-on-button-click-in-jquery
         $(".uploadContainer").submit(function() {
@@ -46,7 +61,7 @@
           var description = $("#uploadDescription").val();
           jQuery.ajax('/projects/', {
             method: 'POST',
-            data: JSON.stringify({name: title, description: description, img_url: img_url}),
+            data: JSON.stringify({id: items, name: title, description: description, img_url: img_url}),
             success: function(data) {
                 // make ajax request to retrieve item to add it to the page without reloading
                 jQuery.ajax('/projects/', {
@@ -55,6 +70,7 @@
                       var car = data[data.length - 1];
                       var item = document.createElement("li");
                       item.innerHTML = car.name;
+                      items++;
                       item.onclick = function () { displayCarInfo(car.id); console.log("I've been clicked")};
                       $("#pictures").append(item);
                     
@@ -72,29 +88,12 @@
           });
         }
 
+        // Source: http://stackoverflow.com/questions/13888093/how-to-show-hide-a-form-on-button-click-in-jquery
+        $(".createContainer").submit(function() {
+          /* AJAX calls and insertion into #productionForm */
+          $(".uploadContainer").show();
+          return false;
+        });
     </script>
-    <script>
-    jQuery.ajax('/projects/', {
-      method: 'GET',
-      success: function(data) {
-        data.forEach(function(car) {
-          var item = document.createElement("li");
-          item.innerHTML = car.name;
-          item.onclick = function () { displayCarInfo(car.id); console.log("I've been clicked")};
-          $("#pictures").append(item);
-        });
-      },
-      error: function(xhr, status) {
-        // If the status was not OK (200), we had an error
-        console.log('Error: ' + status);
-      }
-    });
-
-    function displayCarInfo (id) {
-
-      console.log("car id" + id);
-    }
-    </script>
-
   </body>
 </html>
