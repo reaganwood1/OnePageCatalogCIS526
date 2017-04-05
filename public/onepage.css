@@ -1,18 +1,8 @@
-img {
-  height: 200px;
-}
-
-.image {
-  width: 100%;
-  height: auto;
-  padding: 10px;
-  border: 10px;
-  border-color: black;
-
-}
 
 
-.lambo {
+
+
+body {
 
   background-color: #FFF305;
 }
@@ -20,7 +10,11 @@ img {
 .container {
   color: #FFF305;
 }
+li {
+  padding: 25px;
+  font-size: 14px;
 
+}
 .uploadContainer {
   max-width: 750px;
   width: 100%;

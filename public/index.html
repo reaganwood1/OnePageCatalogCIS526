@@ -51,7 +51,6 @@
         // Source: http://stackoverflow.com/questions/13888093/how-to-show-hide-a-form-on-button-click-in-jquery
         $(".uploadContainer").submit(function() {
           /* AJAX calls and insertion into #productionForm */
-          console.log("yellow");
           return false;
         });
 
@@ -59,6 +58,11 @@
           var img_url = $("#uploadImage").val();
           var title = $("#uploadTitle").val();
           var description = $("#uploadDescription").val();
+          if (img_url == "" || title == "" || description == "")
+          {
+            alert("Please enter all data fields");
+            return;
+          }
           jQuery.ajax('/projects/', {
             method: 'POST',
             data: JSON.stringify({id: items, name: title, description: description, img_url: img_url}),
